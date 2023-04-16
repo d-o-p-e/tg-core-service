@@ -7,7 +7,7 @@ on:
 
 jobs:
   jib:
-    uses: d-o-p-e/ci-cd/.github/workflows/jib/ecr.yaml
+    uses: d-o-p-e/ci-cd/.github/workflows/jib/ecr.yaml@main
     with:
       JAVA_VERSION: 17
       AWS_ACCESS_KEY_ID: ${{ secret.AWS_ACCESS_KEY_ID }}
