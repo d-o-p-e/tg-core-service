@@ -41,8 +41,6 @@ jib {
 		tags = ['v1']
 	}
 	container {
-		entrypoint = ['java', '-jar', 'tg-core-service.jar']
-		appRoot = "/app"
 		ports = ["8080"]
 	}
 }
