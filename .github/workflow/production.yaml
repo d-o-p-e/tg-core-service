@@ -1,0 +1,36 @@
+name: Production Workflow for TG Core Service
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  jib:
+    uses: d-o-p-e/ci-cd/.github/workflows/jib/ecr.yaml
+    with:
+      JAVA_VERSION: 17
+      AWS_ACCESS_KEY_ID: ${{ secret.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secret.AWS_SECRET_ACCESS_KEY }}
+  deploy:
+    needs: jib
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy AWS Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ inputs.AWS_SERVER_HOST }}
+          username: ${{ inputs.AWS_SERVER_USERNAME }}
+          key: ${{ inputs.AWS_SSH_KEY }}
+          port: ${{ inputs.SERVER_PORT }}
+          script: |
+            sudo docker stop ${{ inputs.CONTAINER_NAME }}
+            sudo docker rm ${{ inputs.CONTAINER_NAME }}
+            sudo docker images | grep ${{ inputs.IMAGE_NAME }} | xargs docker rmi --force
+            sudo docker run --pull=always -d -p 8080:8080 \
+            --name ${{ inputs.CONTAINER_NAME }} \
+            -v /root/service/logs:/logs \
+            -e DB_URL=${{ secrets.DB_URL }} \
+            -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            public.ecr.aws/x5n3h3k1/tg-core-service:latest
