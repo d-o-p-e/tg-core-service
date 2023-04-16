@@ -20,16 +20,16 @@ jobs:
       - name: Deploy AWS Server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ inputs.AWS_SERVER_HOST }}
-          username: ${{ inputs.AWS_SERVER_USERNAME }}
-          key: ${{ inputs.AWS_SSH_KEY }}
-          port: ${{ inputs.SERVER_PORT }}
+          host: ${{ secrets.AWS_SERVER_HOST }}
+          username: ${{ secrets.AWS_SERVER_USERNAME }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
           script: |
-            sudo docker stop ${{ inputs.CONTAINER_NAME }}
-            sudo docker rm ${{ inputs.CONTAINER_NAME }}
-            sudo docker images | grep ${{ inputs.IMAGE_NAME }} | xargs docker rmi --force
+            sudo docker stop tg-core-service
+            sudo docker rm tg-core-service
+            sudo docker images | grep tg-core-service | xargs docker rmi --force
             sudo docker run --pull=always -d -p 8080:8080 \
-            --name ${{ inputs.CONTAINER_NAME }} \
+            --name tg-core-service \
             -v /root/service/logs:/logs \
             -e DB_URL=${{ secrets.DB_URL }} \
             -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
