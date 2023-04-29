@@ -11,14 +11,14 @@ on:
 #       - main
 
 jobs:
-#   if_merged:
-#     name: Check if the pull request was merged
+  if_merged:
+    name: Check if the pull request was merged
 #     if: github.event.pull_request.merged == true
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Check if PR was merged.
-#         run: |
-#           echo "PR WAS MERGED TO PRODUCTION. START DEPLOYMENT."
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PR was merged.
+        run: |
+          echo "PR WAS MERGED TO PRODUCTION. START DEPLOYMENT."
   jib:
     needs: if_merged
     uses: d-o-p-e/ci-cd/.github/workflows/ecr-jib.yaml@main
