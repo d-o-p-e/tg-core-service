@@ -24,3 +24,11 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+
+oauth:
+  kakao:
+    client-id: ${KAKAO_CLIENT_ID}
+    redirect-uri: ${KAKAO_REDIRECT_URI}
+    api_url:
+      token: ${KAKAO_API_URL_TOKEN}
+      information: ${KAKAO_API_URL_INFORMATION}
