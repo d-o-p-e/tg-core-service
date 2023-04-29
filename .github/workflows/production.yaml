@@ -1,6 +1,9 @@
 name: Production Workflow for TG Core Service
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types:
       - closed
