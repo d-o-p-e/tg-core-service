@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tg
-    username: root
-    password: 1234
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     hikari:
       auto-commit: false
       connection-test-query: SELECT 1
@@ -27,8 +27,8 @@ spring:
 
 oauth:
   kakao:
-    client-id: 0
-    redirect-uri: 0
+    client-id: ${KAKAO_CLIENT_ID}
+    redirect-uri: ${KAKAO_REDIRECT_URI}
     api_url:
-      token: 0
-      information: 0
+      token: ${KAKAO_API_URL_TOKEN}
+      information: ${KAKAO_API_URL_INFORMATION}

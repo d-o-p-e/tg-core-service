@@ -15,10 +15,10 @@ public class OAuthService {
     private final KakaoAccessTokenFeignClient kakaoAccessTokenFeignClient ;
     private final KakaoInformationFeignClient kakaoInformationFeignClient;
 
-    @Value("${kakao.client-id}")
+    @Value("${oauth.kakao.client-id}")
     private String kakaoClientId;
 
-    @Value("${kakao.redirect-uri}")
+    @Value("${oauth.kakao.redirect-uri}")
     private String redirectUri;
 
     public KakaoUserInformation requestUserInformation(String authorizationCode) {
