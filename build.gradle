@@ -44,7 +44,7 @@ tasks.named('test') {
 
 jib {
 	from {
-		image = 'openjdk:17-alpine'
+		image = 'amazoncorretto:17.0.7'
 	}
 	to {
 		image = 'dopeteam/tg-core-service'
