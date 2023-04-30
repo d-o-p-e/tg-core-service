@@ -28,7 +28,7 @@ public class PostController {
 
     @Operation(summary = "게시물 조회", description = "페이징 방식으로 피드를 조회합니다.")
     @GetMapping("/feed")
-    public ResponseEntity<List<FeedResponseDto>> getFeed(@RequestParam Long lastPostId, @RequestParam int size) {
+    public ResponseEntity<List<FeedResponseDto>> getFeed(@RequestParam(required = false) Long lastPostId, @RequestParam int size) {
         Long userId = UserContext.getContext();
         return new ResponseEntity<>(postService.getFeed(userId, lastPostId, size), HttpStatus.OK);
     }
