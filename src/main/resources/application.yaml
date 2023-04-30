@@ -9,7 +9,7 @@ spring:
       connection-test-query: SELECT 1
       minimum-idle: 10
       maximum-pool-size: 20
-      transaction-isolation: TRANSACTION_READ_UNCOMMITTED
+      transaction-isolation: TRANSACTION_READ_COMMITTED
       pool-name: pool-of-girls
 
   jpa:
