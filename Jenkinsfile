@@ -24,7 +24,9 @@ pipeline {
         steps {
             script {
                 withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://192.168.219.108:6443']) {
-                  sh 'kubectl apply -f k8s.yaml'
+                  sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'
+                  sh 'chmod u+x ./kubectl'
+                  sh './kubectl apply -f k8s.yaml'
                 }
             }
         }
