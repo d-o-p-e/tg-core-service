@@ -6,6 +6,7 @@ import com.tg.coreservice.dto.CreatePostRequestDto;
 import com.tg.coreservice.dto.FeedResponseDto;
 import com.tg.coreservice.repository.PostRepository;
 import com.tg.coreservice.repository.UserRepository;
+import com.tg.coreservice.specification.FeedOption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -42,8 +43,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<FeedResponseDto> getFeed(Long userId, Long lastPostId, int size) {
-        List<FeedResponseDto> feed = postRepository.getFeed(lastPostId, size);
+    public List<FeedResponseDto> getFeed(Long userId, FeedOption feedOption) {
+        List<FeedResponseDto> feed = postRepository.getFeed(feedOption);
         if (userId != null) {
             for (FeedResponseDto dto : feed) {
                 dto.setIsLiked(postLikeRepository.existsByUserIdAndPostId(userId, dto.getPostId()));

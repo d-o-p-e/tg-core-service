@@ -5,6 +5,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tg.coreservice.dto.FeedResponseDto;
 import com.tg.coreservice.dto.QFeedResponseDto;
+import com.tg.coreservice.specification.FeedOption;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     }
 
     @Override
-    public List<FeedResponseDto> getFeed(Long lastPostId, int size) {
+    public List<FeedResponseDto> getFeed(FeedOption feedOption) {
         return queryFactory
                 .select(new QFeedResponseDto(
                         post.id,
@@ -40,10 +41,11 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .from(post)
                 .join(post.user, user)
                 .where(
-                        cursorPagination(lastPostId)
+                        cursorPagination(feedOption.getLastPostId()),
+                        userPage(feedOption.getTargetUserId())
                 )
                 .orderBy(post.id.desc())
-                .limit(size)
+                .limit(feedOption.getSize())
                 .fetch();
     }
 
@@ -52,5 +54,12 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
             return null;
         }
         return post.id.lt(lastPostId);
+    }
+
+    private Predicate userPage(Long targetUserId) {
+        if(targetUserId == null) {
+            return null;
+        }
+        return post.user.id.eq(targetUserId);
     }
 }

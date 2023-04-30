@@ -5,6 +5,7 @@ import com.tg.coreservice.auth.UserContext;
 import com.tg.coreservice.dto.CreatePostRequestDto;
 import com.tg.coreservice.dto.FeedResponseDto;
 import com.tg.coreservice.service.PostService;
+import com.tg.coreservice.specification.FeedOption;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,14 @@ public class PostController {
 
     @Operation(summary = "게시물 조회", description = "페이징 방식으로 피드를 조회합니다.")
     @GetMapping("/feed")
-    public ResponseEntity<List<FeedResponseDto>> getFeed(@RequestParam(required = false) Long lastPostId, @RequestParam int size) {
+    public ResponseEntity<List<FeedResponseDto>> getFeed(
+            @RequestParam int size,
+            @RequestParam(required = false) Long lastPostId,
+            @RequestParam(required = false) Long targetUserId
+    ) {
         Long userId = UserContext.getContext();
-        return new ResponseEntity<>(postService.getFeed(userId, lastPostId, size), HttpStatus.OK);
+        FeedOption feedOption = new FeedOption(size, lastPostId, targetUserId);
+        return ResponseEntity.ok().body(postService.getFeed(userId, feedOption));
     }
 
     @Operation(summary = "게시물 등록", description = "새로운 게시글을 작성합니다.")
