@@ -8,8 +8,10 @@ import com.tg.coreservice.repository.PostRepository;
 import com.tg.coreservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class PostService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<FeedResponseDto> getFeed(Long userId, Long lastPostId, int size) {
         List<FeedResponseDto> feed = postRepository.getFeed(lastPostId, size);
         if (userId != null) {
@@ -48,5 +51,16 @@ public class PostService {
             }
         }
         return feed;
+    }
+
+    @Transactional
+    public void delete(Long userId, Long targetPostId) {
+        Post post = postRepository.findById(targetPostId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (!post.getUser().getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        String imageUrl = post.getImageUrl();
+        postRepository.delete(post);
+        awsS3Service.deleteFile(s3ImageDirectory + imageUrl);
     }
 }
