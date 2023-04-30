@@ -43,6 +43,8 @@ public class CommentService {
         return commentList.stream().map(comment -> CommentResponseDto.builder()
                 .commentId(comment.getId())
                 .content(comment.getContent())
+                .createdAt(comment.getCreatedAt())
+                .updatedAt(comment.getUpdatedAt())
                 .userId(comment.getUser().getId())
                 .nickName(comment.getUser().getNickname())
                 .profileImageUrl(comment.getUser().getProfileImageUrl())
