@@ -18,20 +18,17 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true; // spring docs를 위한 처리
         }
 
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        UserContext.CONTEXT.set(userId);
+
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
-        if (auth == null) { // Auth 어노테이션이 없으면, 인증이 필요없는 요청이므로 true를 반환한다.
-            return true;
-        }
-
-        HttpSession session = request.getSession();
-        if (session.getAttribute("userId") == null) {
+        if (auth != null && userId == null) {
             response.sendError(HttpStatus.UNAUTHORIZED.value(), "로그인이 필요합니다.");
             return false;
         }
 
-        Long userId = (Long) session.getAttribute("userId");
-        UserContext.CONTEXT.set(userId);
         return true;
     }
 }

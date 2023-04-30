@@ -42,6 +42,7 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
+    @Auth
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long commentId, @PathVariable String postId) {
         Long userId = UserContext.getContext();
