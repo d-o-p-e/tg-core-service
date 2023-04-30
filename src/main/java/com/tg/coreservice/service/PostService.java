@@ -1,6 +1,7 @@
 package com.tg.coreservice.service;
 
 import com.tg.coreservice.domain.Post;
+import com.tg.coreservice.domain.PostLike;
 import com.tg.coreservice.repository.PostLikeRepository;
 import com.tg.coreservice.dto.CreatePostRequestDto;
 import com.tg.coreservice.dto.FeedResponseDto;
@@ -9,6 +10,7 @@ import com.tg.coreservice.repository.UserRepository;
 import com.tg.coreservice.specification.FeedOption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,5 +65,22 @@ public class PostService {
         String imageUrl = post.getImageUrl();
         postRepository.delete(post);
         awsS3Service.deleteFile(s3ImageDirectory + imageUrl);
+    }
+
+    public void like(Long userId, Long postId) {
+        try {
+            postLikeRepository.save(
+                    PostLike.builder()
+                            .user(userRepository.getReferenceById(userId))
+                            .post(postRepository.getReferenceById(postId))
+                            .build()
+            );
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 좋아요를 누른 게시글입니다.");
+        }
+    }
+
+    public void unlike(Long userId, Long postId) {
+        postLikeRepository.deleteByUserIdAndPostId(userId, postId);
     }
 }

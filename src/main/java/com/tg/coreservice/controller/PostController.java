@@ -58,4 +58,18 @@ public class PostController {
         postService.delete(userId, postId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/like/{postId}")
+    public ResponseEntity<Void> likePost(@PathVariable Long postId) {
+        Long userId = UserContext.getContext();
+        postService.like(userId, postId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/like/{postId}")
+    public ResponseEntity<Void> unlikePost(@PathVariable Long postId) {
+        Long userId = UserContext.getContext();
+        postService.unlike(userId, postId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
