@@ -22,6 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173", "https://dope.yanychoi.site/")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "OPTIONS")
+                .exposedHeaders("Set-Cookie")
                 .allowedHeaders("headers")
                 .allowCredentials(false)
                 .maxAge(3000);
