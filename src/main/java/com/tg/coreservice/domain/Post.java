@@ -12,9 +12,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
+@NoArgsConstructor
 public class Post {
 
     @Id
@@ -25,6 +30,12 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList;
+
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> likeList;
 
     private String content;
 

@@ -24,12 +24,15 @@ public class User {
 
     private String nickname;
 
+    private String profileImageUrl;
+
     public User() {
     }
 
     @Builder
-    public User(String providerId, String nickname) {
+    public User(String providerId, String nickname, String profileImageUrl) {
         this.providerId = providerId;
         this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
     }
 }
