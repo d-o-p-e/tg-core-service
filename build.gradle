@@ -41,8 +41,8 @@ jib {
 		image = 'openjdk:17-alpine'
 	}
 	to {
-		image = 'public.ecr.aws/x5n3h3k1/tg-core-service'
-		tags = ['v1']
+		image = 'dopeteam/tg-core-service'
+		tags = ['latest']
 	}
 	container {
 		ports = ["8080"]
