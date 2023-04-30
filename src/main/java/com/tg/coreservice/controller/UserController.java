@@ -3,6 +3,7 @@ package com.tg.coreservice.controller;
 import com.tg.coreservice.auth.Auth;
 import com.tg.coreservice.auth.UserContext;
 import com.tg.coreservice.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "카카오 로그인", description = "카카오 OAuth2.0 클백 URL입니다.")
     @GetMapping("/oauth/kakao")
     public ResponseEntity<Void> login(@RequestParam String code, HttpSession session) {
         Long userId = userService.login(code);

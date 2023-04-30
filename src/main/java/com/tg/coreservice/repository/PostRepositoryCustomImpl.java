@@ -42,6 +42,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .where(
                         cursorPagination(lastPostId)
                 )
+                .orderBy(post.id.desc())
                 .limit(size)
                 .fetch();
     }
@@ -50,6 +51,6 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         if (lastPostId == null) {
             return null;
         }
-        return post.id.gt(lastPostId);
+        return post.id.lt(lastPostId);
     }
 }
