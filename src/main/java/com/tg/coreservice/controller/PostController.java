@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,8 +52,8 @@ public class PostController {
 
     @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
     @Auth
-    @PostMapping("/{postId}")
-    public ResponseEntity<Void> createPost(@PathVariable Long postId) {
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
         Long userId = UserContext.getContext();
         postService.delete(userId, postId);
         return new ResponseEntity<>(HttpStatus.OK);

@@ -22,7 +22,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Post {
+public class Post extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
