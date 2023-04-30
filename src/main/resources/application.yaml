@@ -41,3 +41,14 @@ oauth:
       token: 0
       information: 0
 
+aws:
+  s3:
+    credentials:
+      access-key: test
+      secret-key: test
+    region:
+      static: test
+    bucket: test
+    directory:
+      image: test
+      profile: test
