@@ -3,6 +3,7 @@ package com.tg.coreservice.service;
 import com.tg.coreservice.domain.Comment;
 import com.tg.coreservice.domain.Post;
 import com.tg.coreservice.domain.User;
+import com.tg.coreservice.dto.CommentResponseDto;
 import com.tg.coreservice.dto.CreateCommentRequestDto;
 import com.tg.coreservice.repository.CommentRepository;
 import com.tg.coreservice.repository.PostRepository;
@@ -12,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +35,17 @@ public class CommentService {
                         .content(createCommentRequestDto.getContent())
                         .build()
         );
+    }
+
+    public List<CommentResponseDto> getCommentsList(Long postId) {
+        List<Comment> commentList = commentRepository.findAllByPostIdFetch(postId);
+        return commentList.stream().map(comment -> CommentResponseDto.builder()
+                .commentId(comment.getId())
+                .content(comment.getContent())
+                .userId(comment.getUser().getId())
+                .nickName(comment.getUser().getNickname())
+                .profileImageUrl(comment.getUser().getProfileImageUrl())
+                .build()
+        ).collect(Collectors.toList());
     }
 }
