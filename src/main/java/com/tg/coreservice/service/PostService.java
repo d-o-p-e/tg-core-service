@@ -1,13 +1,17 @@
 package com.tg.coreservice.service;
 
 import com.tg.coreservice.domain.Post;
+import com.tg.coreservice.domain.User;
 import com.tg.coreservice.dto.CreatePostRequestDto;
+import com.tg.coreservice.dto.FeedResponseDto;
 import com.tg.coreservice.repository.PostRepository;
 import com.tg.coreservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +36,10 @@ public class PostService {
                     .imageUrl(fileName)
                     .build()
         );
+    }
+
+    public List<FeedResponseDto> getFeed(Long userId, Long lastPostId, int size) {
+        User me = userRepository.getReferenceById(userId);
+        return postRepository.getFeed(me, lastPostId, size);
     }
 }
