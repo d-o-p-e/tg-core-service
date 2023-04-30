@@ -14,26 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "USER", description = "유저 API")
+@Tag(name = "AUTH", description = "인증/인가 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
-public class UserController {
+public class AuthController {
 
     private final UserService userService;
 
-    @Auth
-    @GetMapping("/user")
-    public ResponseEntity<Void> testAuthUser() {
-        Long userId = UserContext.getContext();
-        System.out.println("로그인한 사용자만 접근 가능한 컨트롤러");
-        System.out.println("userId = " + userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/guest")
-    public ResponseEntity<Void> testNoAuthUser() {
-        System.out.println("Auth 어노테이션이 붙지 않은 컨트롤러는 비로그인한 사용자도 접근 가능");
+    @Operation(summary = "카카오 로그인", description = "카카오 OAuth2.0 클백 URL입니다.")
+    @GetMapping("/oauth/kakao")
+    public ResponseEntity<Void> login(@RequestParam String code, HttpSession session) {
+        Long userId = userService.login(code);
+        session.setAttribute("userId", userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
