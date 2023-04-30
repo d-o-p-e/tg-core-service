@@ -1,7 +1,7 @@
 package com.tg.coreservice.service;
 
 import com.tg.coreservice.domain.Post;
-import com.tg.coreservice.domain.User;
+import com.tg.coreservice.repository.PostLikeRepository;
 import com.tg.coreservice.dto.CreatePostRequestDto;
 import com.tg.coreservice.dto.FeedResponseDto;
 import com.tg.coreservice.repository.PostRepository;
@@ -24,6 +24,7 @@ public class PostService {
     private String s3ImageDirectory;
 
     private final UserRepository userRepository;
+    private final PostLikeRepository postLikeRepository;
 
     @Transactional
     public void create(Long userId, CreatePostRequestDto createPostRequestDto) {
@@ -39,7 +40,13 @@ public class PostService {
     }
 
     public List<FeedResponseDto> getFeed(Long userId, Long lastPostId, int size) {
-        User me = userRepository.getReferenceById(userId);
-        return postRepository.getFeed(me, lastPostId, size);
+        List<FeedResponseDto> feed = postRepository.getFeed(lastPostId, size);
+        if (userId != null) {
+            for (FeedResponseDto dto : feed) {
+                dto.setIsLiked(postLikeRepository.existsByUserIdAndPostId(userId, dto.getPostId()));
+                dto.setIsMyPost(dto.getUserId().equals(userId));
+            }
+        }
+        return feed;
     }
 }

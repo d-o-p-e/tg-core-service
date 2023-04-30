@@ -3,11 +3,8 @@ package com.tg.coreservice.repository;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tg.coreservice.domain.User;
 import com.tg.coreservice.dto.FeedResponseDto;
 import com.tg.coreservice.dto.QFeedResponseDto;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,16 +15,14 @@ import static com.tg.coreservice.domain.QUser.user;
 @Repository
 public class PostRepositoryCustomImpl implements PostRepositoryCustom {
 
-    @PersistenceContext
-    private EntityManager entityManager;
     private final JPAQueryFactory queryFactory;
 
-    public PostRepositoryCustomImpl() {
-        this.queryFactory = new JPAQueryFactory(entityManager);
+    public PostRepositoryCustomImpl(JPAQueryFactory queryFactory) {
+        this.queryFactory = queryFactory;
     }
 
     @Override
-    public List<FeedResponseDto> getFeed(User me, Long lastPostId, int size) {
+    public List<FeedResponseDto> getFeed(Long lastPostId, int size) {
         return queryFactory
                 .select(new QFeedResponseDto(
                         post.id,
@@ -39,11 +34,11 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                         user.profileImageUrl,
                         post.likeList.size(),
                         post.commentList.size(),
-                        Expressions.asBoolean(false), //isLiked
-                        me == null ? Expressions.asBoolean(false) : post.user.eq(me) //isMyPost
+                        Expressions.asBoolean(false),
+                        Expressions.asBoolean(false)
                 ))
                 .from(post)
-                .join(user)
+                .join(post.user, user)
                 .where(
                         cursorPagination(lastPostId)
                 )
@@ -55,6 +50,6 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         if (lastPostId == null) {
             return null;
         }
-        return post.id.lt(lastPostId);
+        return post.id.gt(lastPostId);
     }
 }

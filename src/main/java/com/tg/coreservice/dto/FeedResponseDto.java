@@ -4,8 +4,12 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.tg.coreservice.specification.PostCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class FeedResponseDto {
     private Long postId;
