@@ -10,19 +10,14 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
   }
   stages {
-    stage('Build') {
-      steps {
-        sh './gradlew jib'
-      }
-    }
     stage('Login') {
       steps {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       }
     }
-    stage('Push') {
+    stage('Build') {
       steps {
-        sh 'docker push dopetest/tg-core-service:latest'
+        sh './gradlew jib'
       }
     }
   }
