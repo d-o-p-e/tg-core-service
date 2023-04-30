@@ -25,6 +25,14 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
 
+management:
+  endpoints:
+    prometheus:
+      enabled: true
+    web:
+      exposure:
+        include: prometheus
+
 oauth:
   kakao:
     client-id: ${KAKAO_CLIENT_ID}
@@ -32,3 +40,4 @@ oauth:
     api_url:
       token: ${KAKAO_API_URL_TOKEN}
       information: ${KAKAO_API_URL_INFORMATION}
+
