@@ -3,7 +3,6 @@ plugins {
 	id 'org.springframework.boot' version '3.0.5'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'com.google.cloud.tools.jib' version '3.3.1'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.tg'
@@ -56,30 +55,10 @@ jib {
 	}
 }
 
-// Querydsl 설정부
-def generated = 'src/main/generated'
-
-querydsl {
-	jpa = true
-	querydslSourcesDir = generated
+def querydslSrcDir = 'src/main/generated'
+clean {
+	delete file(querydslSrcDir)
 }
-sourceSets {
-	main.java.srcDir generated
-}
-
-compileQuerydsl{
-	options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	querydsl.extendsFrom compileClasspath
-}
-// complieQuerydsl Task에 clean 동작 추가
-tasks.compileQuerydsl.dependsOn(clean);
-
-compileQuerydsl{
-	options.annotationProcessorPath = configurations.querydsl
+tasks.withType(JavaCompile) {
+	options.generatedSourceOutputDirectory = file(querydslSrcDir)
 }
