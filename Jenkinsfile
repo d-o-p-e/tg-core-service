@@ -22,8 +22,9 @@ pipeline {
     }
     stage('Kubernetes deploy') {
       steps {
-        kubernetesDeploy(configs: "k8s.yaml", kubeconfigId: 'kubeconfig')
-        sh "/usr/local/bin/kubectl --kubeconfig=/u01/kube-config.yaml rollout restart deployment/tg-core-service -n backend-server"
+        script {
+          kubernetesDeploy(configs: "k8s.yaml")
+        }
       }
     }
   }
