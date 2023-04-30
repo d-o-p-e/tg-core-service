@@ -32,19 +32,5 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUserInformation(targetUserId));
     }
 
-    @Auth
-    @GetMapping("/user")
-    public ResponseEntity<Void> testAuthUser() {
-        Long userId = UserContext.getContext();
-        System.out.println("로그인한 사용자만 접근 가능한 컨트롤러");
-        System.out.println("userId = " + userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/guest")
-    public ResponseEntity<Void> testNoAuthUser() {
-        System.out.println("Auth 어노테이션이 붙지 않은 컨트롤러는 비로그인한 사용자도 접근 가능");
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }
 

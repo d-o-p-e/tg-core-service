@@ -5,6 +5,7 @@ import com.tg.coreservice.auth.UserContext;
 import com.tg.coreservice.dto.CommentResponseDto;
 import com.tg.coreservice.dto.CreateCommentRequestDto;
 import com.tg.coreservice.service.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ public class CommentController {
         return ResponseEntity.ok().body(commentService.getCommentsList(postId));
     }
 
+    @Operation(summary = "댓글 작성", description = "댓글을 작성합니다.")
     @Auth
     @PostMapping
     public ResponseEntity<Void> createComment(@PathVariable Long postId, CreateCommentRequestDto createCommentRequestDto) {
@@ -39,6 +41,7 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long commentId, @PathVariable String postId) {
         Long userId = UserContext.getContext();

@@ -59,6 +59,7 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "좋아요", description = "게시글에 좋아요를 추가합니다.")
     @PostMapping("/like/{postId}")
     public ResponseEntity<Void> likePost(@PathVariable Long postId) {
         Long userId = UserContext.getContext();
@@ -66,6 +67,7 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "좋아요 취소", description = "게시글 좋아요를 취소합니다.")
     @DeleteMapping("/like/{postId}")
     public ResponseEntity<Void> unlikePost(@PathVariable Long postId) {
         Long userId = UserContext.getContext();
