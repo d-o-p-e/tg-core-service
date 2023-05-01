@@ -26,7 +26,6 @@ public class UserService {
     }
 
     private User getOrCreateUser(KakaoUserInformation kakaoUserInformation) {
-        System.out.println("kakaoUserInformation.getProviderId() = " + kakaoUserInformation.getProviderId());
         return userRepository.findByProviderId(kakaoUserInformation.getProviderId())
                 .orElseGet(() -> userRepository.save(
                                 User.builder()

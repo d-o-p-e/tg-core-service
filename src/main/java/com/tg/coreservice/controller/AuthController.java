@@ -29,19 +29,5 @@ public class AuthController {
         session.setAttribute("userId", userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @Operation(summary = "카카오 토큰 발급", description = "인가코드를 통해 엑세스 토큰을 받습니다.")
-    @GetMapping("/oauth/kakao/code")
-    public ResponseEntity<KakaoAccessTokenResponseDto> requestKakaoAccessCode(@RequestParam String code) {
-        return ResponseEntity.ok().body(oAuthService.accessTokenRequestToken(code));
-    }
-
-    @Operation(summary = "카카오 최종 최종 최종 로그인", description = "인가코드를 통해 엑세스 토큰을 받습니다.")
-    @GetMapping("/oauth/kakao/token")
-    public ResponseEntity<KakaoAccessTokenResponseDto> loginWithToken(@RequestParam String token, HttpSession session) {
-        Long userId = userService.login(token);
-        session.setAttribute("userId", userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }
 

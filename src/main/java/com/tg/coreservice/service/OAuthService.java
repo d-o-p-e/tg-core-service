@@ -21,27 +21,17 @@ public class OAuthService {
     @Value("${oauth.kakao.redirect-uri}")
     private String redirectUri;
 
-    public KakaoUserInformation requestUserInformation(String accessToken) {
-//        KakaoAccessTokenResponseDto result = kakaoAccessTokenFeignClient.call(
-//                "application/x-www-form-urlencoded",
-//                "authorization_code",
-//                kakaoClientId,
-//                redirectUri,
-//                authorizationCode
-//        );
-        return kakaoInformationFeignClient.call(
-                "application/x-www-form-urlencoded;charset=utf-8",
-                "Bearer " + accessToken
-        );
-    }
-
-    public KakaoAccessTokenResponseDto accessTokenRequestToken(String authorizationCode) {
-        return kakaoAccessTokenFeignClient.call(
+    public KakaoUserInformation requestUserInformation(String code) {
+        KakaoAccessTokenResponseDto result = kakaoAccessTokenFeignClient.call(
                 "application/x-www-form-urlencoded",
                 "authorization_code",
                 kakaoClientId,
                 redirectUri,
-                authorizationCode
+                code
+        );
+        return kakaoInformationFeignClient.call(
+                "application/x-www-form-urlencoded;charset=utf-8",
+                "Bearer " + result.getAccessToken()
         );
     }
 }
