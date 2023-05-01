@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +21,18 @@ public class AuthController {
 
     @Operation(summary = "카카오 로그인", description = "카카오 OAuth2.0 클백 URL입니다.")
     @GetMapping("/oauth/kakao")
-    public ResponseEntity<Void> login(@RequestParam String code, HttpSession session) {
+    public String login(@RequestParam String code, HttpSession session) {
         Long userId = userService.login(code);
         session.setAttribute("userId", userId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "redirect:/";
     }
+
+//    @Operation(summary = "카카오 로그인", description = "카카오 OAuth2.0 클백 URL입니다.")
+//    @GetMapping("/oauth/kakao/code")
+//    public ResponseEntity<Void> login(@RequestParam String code) {
+//        Long userId = userService.login(code);
+//        session.setAttribute("userId", userId);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 }
 
