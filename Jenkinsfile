@@ -38,10 +38,10 @@ pipeline {
       sh 'docker logout'
     }
     success {
-      slackSend "Core Service Deployed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+      slackSend message: "Core Service Deployed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
     }
     failure {
-      slackSend "Core Service Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+      slackSend message: "Core Service Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
     }
   }
 }
