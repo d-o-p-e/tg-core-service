@@ -19,8 +19,8 @@ public class UserService {
     private final OAuthService oAuthService;
     private final PostRepository postRepository;
 
-    public Long login(String token) {
-        KakaoUserInformation kakaoUserInformation = oAuthService.requestUserInformation(token);
+    public Long login(String code) {
+        KakaoUserInformation kakaoUserInformation = oAuthService.requestUserInformation(code);
         User user = getOrCreateUser(kakaoUserInformation);
         return user.getId();
     }
