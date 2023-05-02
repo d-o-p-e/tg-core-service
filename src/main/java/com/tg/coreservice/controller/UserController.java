@@ -1,6 +1,5 @@
 package com.tg.coreservice.controller;
 
-import com.tg.coreservice.auth.Auth;
 import com.tg.coreservice.auth.UserContext;
 import com.tg.coreservice.dto.UserInformationResponseDto;
 import com.tg.coreservice.service.UserService;
