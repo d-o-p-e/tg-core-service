@@ -22,7 +22,7 @@ import java.util.List;
 @Tag(name = "COMMENT", description = "댓글 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post/{postId}/comment")
+@RequestMapping("/v1/post/{postId}/comment")
 public class CommentController {
 
     private final CommentService commentService;
