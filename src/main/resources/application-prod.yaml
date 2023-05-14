@@ -52,3 +52,7 @@ aws:
     directory:
       image: ${S3_DIRECTORY_IMAGE}
       profile: ${S3_DIRECTORY_PROFILE}
+
+server:
+  servlet:
+    contextPath: /api
