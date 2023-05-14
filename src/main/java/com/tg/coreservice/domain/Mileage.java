@@ -19,4 +19,8 @@ public class Mileage {
         this.post_id = post_id;
         this.mileage = mileage;
     }
+
+    public void decrement() {
+        mileage--;
+    }
 }
