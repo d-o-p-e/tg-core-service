@@ -1,15 +1,20 @@
 package com.tg.coreservice.service;
 
+import com.tg.coreservice.domain.Mileage;
 import com.tg.coreservice.domain.User;
 import com.tg.coreservice.dto.KakaoUserInformation;
 import com.tg.coreservice.dto.UserInformationResponseDto;
+import com.tg.coreservice.repository.MileageRepository;
 import com.tg.coreservice.repository.PostRepository;
 import com.tg.coreservice.repository.UserRepository;
 import com.tg.coreservice.specification.PostCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -18,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final OAuthService oAuthService;
     private final PostRepository postRepository;
+    private final MileageRepository mileageRepository;
 
     public Long login(String code) {
         KakaoUserInformation kakaoUserInformation = oAuthService.requestUserInformation(code);
@@ -25,14 +31,20 @@ public class UserService {
         return user.getId();
     }
 
-    private User getOrCreateUser(KakaoUserInformation kakaoUserInformation) {
-        return userRepository.findByProviderId(kakaoUserInformation.getProviderId())
-                .orElseGet(() -> userRepository.save(
-                                User.builder()
-                                        .providerId(kakaoUserInformation.getProviderId())
-                                        .build()
-                        )
-                );
+    @Transactional
+    public User getOrCreateUser(KakaoUserInformation kakaoUserInformation) {
+        Optional<User> optionalUser = userRepository.findByProviderId(kakaoUserInformation.getProviderId());
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return user;
+        } else {
+            User user = User.builder()
+                    .providerId(kakaoUserInformation.getProviderId())
+                    .build();
+            mileageRepository.save(new Mileage(user.getId(), 0L));
+            return userRepository.save(user);
+        }
+
     }
 
     public UserInformationResponseDto getUserInformation(Long userId) {
