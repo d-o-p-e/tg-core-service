@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "POST", description = "게시물 API")
+@Tag(name = "COMMUNITY", description = "커뮤니티 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post")
+@RequestMapping("/community")
 public class PostController {
 
     private final PostService postService;
