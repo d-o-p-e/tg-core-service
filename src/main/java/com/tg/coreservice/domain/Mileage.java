@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 public class Mileage {
 
     @Id
-    private Long post_id;
+    private Long user_id;
 
     private Long mileage;
 
     public Mileage(Long post_id, Long mileage) {
-        this.post_id = post_id;
+        this.user_id = post_id;
         this.mileage = mileage;
     }
 
