@@ -38,11 +38,11 @@ public class UserService {
             User user = optionalUser.get();
             return user;
         } else {
-            User user = User.builder()
+            User user = userRepository.save(User.builder()
                     .providerId(kakaoUserInformation.getProviderId())
-                    .build();
+                    .build());
             mileageRepository.save(new Mileage(user.getId(), 0L));
-            return userRepository.save(user);
+            return user;
         }
 
     }
