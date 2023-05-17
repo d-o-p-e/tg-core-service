@@ -41,7 +41,7 @@ public class UserService {
             User user = userRepository.save(User.builder()
                     .providerId(kakaoUserInformation.getProviderId())
                     .build());
-            mileageRepository.save(new Mileage(user.getId(), 0L));
+            mileageRepository.save(new Mileage(user.getId(), 0));
             return user;
         }
 
@@ -59,6 +59,7 @@ public class UserService {
                 .workoutCount(workoutCount)
                 .algorithmCount(algorithmCount)
                 .earlyBirdCount(earlyBirdCount)
+                .mileage(mileageRepository.findById(userId).get().getMileage())
                 .build();
     }
 }

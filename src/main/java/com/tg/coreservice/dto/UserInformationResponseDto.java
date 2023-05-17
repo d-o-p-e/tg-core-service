@@ -15,14 +15,16 @@ public class UserInformationResponseDto {
     private int workoutCount;
     private int algorithmCount;
     private int earlyBirdCount;
+    private int mileage;
 
     @Builder
-    public UserInformationResponseDto(Long userId, String nickname, String profileImage, int workoutCount, int algorithmCount, int earlyBirdCount) {
+    public UserInformationResponseDto(Long userId, String nickname, String profileImage, int workoutCount, int algorithmCount, int earlyBirdCount, int mileage) {
         this.userId = userId;
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.workoutCount = workoutCount;
         this.algorithmCount = algorithmCount;
         this.earlyBirdCount = earlyBirdCount;
+        this.mileage = mileage;
     }
 }
