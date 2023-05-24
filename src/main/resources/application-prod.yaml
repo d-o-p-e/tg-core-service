@@ -56,3 +56,6 @@ aws:
 server:
   servlet:
     contextPath: /api
+    session:
+      cookie:
+        same-site: "none"
